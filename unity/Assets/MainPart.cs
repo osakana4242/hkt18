@@ -39,12 +39,13 @@ public class MainPart : MonoBehaviour {
 
 	int index_;
 	Vector3 createBasePos() {
+		var margin = 8;
 		var pos = new Vector3(
-			(index_ % 2) * 8,
+			(index_ % 8) * margin - (margin * 4),
 			0.5f,
-			(index_ / 2) * 8
+			(index_ / 8) * margin - (margin * 4)
 		);
-		index_ = (index_ + 1) % 4;
+		index_ = (index_ + 1) % 64;
 		return pos;
 	}
 
@@ -53,7 +54,7 @@ public class MainPart : MonoBehaviour {
 	static StateMachine<MainPart>.StateFunc stateInit_g_ = (_evt) => {
 		if (_evt.sm.time < 1f) return null;
 		var blockPrefab = Resources.Load<GameObject>("block");
-		var size = new Vector3(6, 16, 6);
+		var size = new Vector3(4, 14, 4);
 		for (var i = 0; i < 8; i++) {
 			var basePos = _evt.owner.createBasePos();
 			var self = _evt.owner;
@@ -65,7 +66,7 @@ public class MainPart : MonoBehaviour {
 					var col = results_[j];
 					var block = col.GetComponent<Block>();
 					if (!block) continue;
-					Debug.Log("destroy: " + block.GetInstanceID());
+					//		Debug.Log("destroy: " + block.GetInstanceID());
 					col.enabled = false;
 					GameObject.Destroy(block);
 				}
@@ -79,8 +80,8 @@ public class MainPart : MonoBehaviour {
 	static StateMachine<MainPart>.StateFunc stateMain_g_ = (_evt) => {
 		if (_evt.sm.time < 2f) return null;
 		var blockPrefab = Resources.Load<GameObject>("block");
-		var size = new Vector3(6, 16, 6);
-			var basePos = _evt.owner.createBasePos();
+		var size = new Vector3(4, 14, 4);
+		var basePos = _evt.owner.createBasePos();
 		var self = _evt.owner;
 		{
 			var halfSize = size * 0.5f;
@@ -90,7 +91,7 @@ public class MainPart : MonoBehaviour {
 				var col = results_[j];
 				var block = col.GetComponent<Block>();
 				if (!block) continue;
-				Debug.Log("destroy: " + block.GetInstanceID());
+				//	Debug.Log("destroy: " + block.GetInstanceID());
 				col.enabled = false;
 				GameObject.Destroy(block);
 			}
